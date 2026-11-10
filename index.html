@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aawaaz Setu — Every Voice Deserves to Be Heard</title>
+    <meta name="description" content="Aawaaz Setu is an independent, student-led awareness initiative started by DTU student Shreyansh Gupta. Spreading awareness about sexual violence, supporting survivors of all genders, and championing dignity and equality." />
+    <meta property="og:title" content="Aawaaz Setu — From Silence to Awareness" />
+    <meta property="og:description" content="An independent, student-led awareness initiative promoting dignity, support for survivors of all genders, and responsible dialogue." />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#17243A" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Aawaaz Setu" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+    <script>
+      // Gracefully silence benign Vite dev WebSocket HMR notices in cloud proxy environments
+      window.addEventListener('error', function(event) {
+        if (event && event.message && event.message.includes('WebSocket closed without opened')) {
+          event.stopImmediatePropagation();
+          event.preventDefault();
+        }
+      }, true);
+      window.addEventListener('unhandledrejection', function(event) {
+        if (event && event.reason) {
+          var reasonStr = (event.reason.message || String(event.reason));
+          if (reasonStr.indexOf('WebSocket closed without opened') !== -1) {
+            event.stopImmediatePropagation();
+            event.preventDefault();
+          }
+        }
+      }, true);
+    </script>
+  </head>
+  <body class="bg-[#F8F7F3] text-[#252B35] antialiased selection:bg-[#EAE5F5] selection:text-[#17243A]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

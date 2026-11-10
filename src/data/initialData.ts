@@ -1,0 +1,658 @@
+import {
+  Story,
+  SupportResource,
+  MythFact,
+  AwarenessCard,
+  SiteConfig,
+  FAQItem
+} from '../types';
+
+export const DEFAULT_CONFIG: SiteConfig = {
+  email: 'ProjectAawaazUni@gmail.com',
+  googleFormUrl: '', // Configurable placeholder as required
+  instagramUrl: 'https://instagram.com',
+  linkedinUrl: 'https://www.linkedin.com/in/shreyansh-gupta-b85ab833b',
+  twitterUrl: 'https://x.com',
+  youtubeUrl: 'https://youtube.com',
+};
+
+export const INITIAL_RESOURCES: SupportResource[] = [
+  // 1. GOVERNMENT HELPLINES & STATUTORY BODIES
+  {
+    id: 'res-112',
+    name: 'National Emergency Helpline (112)',
+    category: 'Emergency Support',
+    typeOfSupport: 'Police, Fire, Medical & Rescue Dispatch',
+    phone: '112',
+    tollFree: '112',
+    website: 'https://112.gov.in/',
+    hours: '24 Hours / 7 Days a week',
+    languages: ['Hindi', 'English', 'Regional Indian Languages'],
+    description: 'Unified single-number emergency response support system (ERSS) by the Ministry of Home Affairs for immediate police intervention, ambulance, and rescue dispatch.',
+    isGovernment: true,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-ncw',
+    name: 'National Commission for Women (NCW)',
+    category: 'Government Support',
+    typeOfSupport: 'Statutory Rights, Policy & Grievance Facilitation',
+    phone: '7827170170',
+    website: 'https://ncw.gov.in/',
+    hours: 'Office Hours (Complaints 24/7)',
+    languages: ['Hindi', 'English'],
+    description: 'Apex national statutory body safeguarding women’s rights, legal entitlements, and monitoring institutional compliance across India.',
+    isGovernment: true,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-ncw-portal',
+    name: 'NCW Online Complaint Portal',
+    category: 'Government Support',
+    typeOfSupport: 'Online Harassment & Grievance Registration',
+    phone: '7827170170',
+    website: 'https://ncwapps.nic.in/',
+    hours: '24/7 Online Access',
+    languages: ['Hindi', 'English'],
+    description: 'Official electronic registration system for women to register formal complaints against harassment, domestic violence, cybercrime, or institutional inaction.',
+    isGovernment: true,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-ncw-helpline',
+    name: 'NCW 24/7 Women Helpline',
+    category: 'Government Support',
+    typeOfSupport: 'Crisis Intervention & Police Coordination',
+    phone: '7827170170',
+    website: 'https://ncwwomenhelpline.in/',
+    hours: '24/7 Round-the-Clock',
+    languages: ['Hindi', 'English', 'Regional Languages'],
+    description: 'Round-the-clock digital and phone crisis facilitation linking women facing violence or harassment directly with local police, hospitals, and legal services.',
+    isGovernment: true,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-1091',
+    name: 'Women in Distress Helpline (1091)',
+    category: 'Emergency Support',
+    typeOfSupport: 'Emergency Police Protection & Immediate Aid',
+    phone: '1091',
+    tollFree: '1091',
+    website: 'https://www.india.gov.in/directory/helpline',
+    hours: '24 Hours / 7 Days a week',
+    languages: ['Hindi', 'English', 'State Languages'],
+    description: 'National emergency response phone service connecting women facing harassment, stalking, or physical danger directly to local police dispatch and crisis response cells.',
+    isGovernment: true,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-181',
+    name: 'Women Helpline (181)',
+    category: 'Emergency Support',
+    typeOfSupport: '24/7 Crisis Intervention, Police & Shelter Referral',
+    phone: '181',
+    tollFree: '181',
+    website: 'https://www.wcd.gov.in/',
+    hours: '24 Hours / 7 Days a week',
+    languages: ['Hindi', 'English', 'State Languages'],
+    description: 'Universal toll-free 24-hour helpline under the Ministry of Women & Child Development providing immediate and non-emergency support, counseling, and shelter referrals.',
+    isGovernment: true,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-telemanas',
+    name: 'Tele-MANAS Mental Health Support',
+    category: 'Mental Health Support',
+    typeOfSupport: '24/7 Psychological First Aid & Trauma Counseling',
+    phone: '14416',
+    tollFree: '14416',
+    website: 'https://telemanas.mohfw.gov.in/',
+    hours: '24/7 Toll-Free Access',
+    languages: ['20+ Official Indian Languages'],
+    description: 'Government of India comprehensive tele-mental health programme providing free, professional, confidential psychological first aid and trauma counseling.',
+    isGovernment: true,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-nalsa',
+    name: 'National Legal Services Authority (NALSA)',
+    category: 'Legal Awareness',
+    typeOfSupport: 'Free Legal Aid & Court Counsel Representation',
+    phone: '15100',
+    tollFree: '15100',
+    website: 'https://nalsa.gov.in/',
+    hours: '9:30 AM – 6:00 PM (Court Working Days)',
+    languages: ['Hindi', 'English', 'All State Languages'],
+    description: 'Statutory body providing 100% free, competent legal services to women, children, and weaker sections of society under Section 12 of the Legal Services Authorities Act.',
+    isGovernment: true,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-1098',
+    name: 'Child Helpline (1098)',
+    category: 'Child Protection Resources',
+    typeOfSupport: '24/7 Emergency Care & POCSO Legal Protection',
+    phone: '1098',
+    tollFree: '1098',
+    website: 'https://www.wcd.gov.in/',
+    hours: '24/7 Emergency Support',
+    languages: ['Multiple Regional Languages'],
+    description: 'National 24-hour emergency phone service for children and adolescents in need of care, protection, and legal safeguards under the POCSO framework (Mission Vatsalya, MWCD).',
+    isGovernment: true,
+    lastVerifiedDate: 'November 2026',
+  },
+
+  // 2. NGO AND SUPPORT ORGANIZATIONS
+  {
+    id: 'res-sneha',
+    name: 'SNEHA Mumbai',
+    category: "Women's Support Organizations",
+    typeOfSupport: 'Crisis Intervention, Medical Aid & Counseling',
+    phone: '+919833052684',
+    website: 'https://www.snehamumbai.org/',
+    hours: 'Mon – Sat: 10:00 AM – 6:00 PM IST',
+    languages: ['Hindi', 'English', 'Marathi'],
+    description: 'Pioneering non-profit NGO working against violence on women and children. Offers psychosocial counseling, hospital crisis centers, and legal aid guidance.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-shakti-shalini',
+    name: 'Shakti Shalini',
+    category: "Women's Support Organizations",
+    typeOfSupport: 'Safe Shelter, Crisis Intervention & Legal Aid',
+    phone: '+919654462993',
+    website: 'https://shaktishalini.org/',
+    hours: '24/7 Crisis Support',
+    languages: ['Hindi', 'English'],
+    description: 'Prominent Delhi-based NGO operating safe crisis shelter homes, individual trauma counseling, and legal assistance for survivors of gender-based violence and abuse.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-jagori',
+    name: 'Jagori',
+    category: "Women's Support Organizations",
+    typeOfSupport: 'Crisis Counseling, Rights Awareness & Legal Aid',
+    phone: '+918800996640',
+    website: 'https://www.jagori.org/',
+    hours: 'Mon – Fri: 9:30 AM – 5:30 PM IST',
+    languages: ['Hindi', 'English'],
+    description: 'Established feminist NGO providing survivor counseling, legal literacy, safe campus audits, and community-based anti-harassment programs.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-asra',
+    name: 'ASRA Suicide Prevention',
+    category: 'Mental Health Support',
+    typeOfSupport: '24/7 Confidential Crisis Intervention & First Aid',
+    phone: '+919820466726',
+    website: 'https://asra.info/',
+    hours: '24 Hours / 7 Days a week',
+    languages: ['English', 'Hindi'],
+    description: 'Non-profit voluntary crisis intervention organization providing free, confidential emotional first aid and suicide prevention support across India.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-icall',
+    name: 'iCALL TISS Counselling',
+    category: 'Mental Health Support',
+    typeOfSupport: 'Psychosocial Counseling & Trauma Support',
+    phone: '+919152987821',
+    website: 'https://icallhelpline.org/',
+    hours: 'Mon – Sat: 10:00 AM – 8:00 PM IST',
+    languages: ['English', 'Hindi', 'Marathi', 'Malayalam', 'Bengali'],
+    description: 'Professional counselling initiative run by the Tata Institute of Social Sciences (TISS) for individuals experiencing emotional distress, trauma, and violence.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-csr',
+    name: 'Centre for Social Research (CSR)',
+    category: "Women's Support Organizations",
+    typeOfSupport: 'Gender Rights, Crisis Counseling & Legal Facilitation',
+    phone: '+911126899998',
+    website: 'https://www.csrindia.org/',
+    hours: 'Mon – Fri: 9:30 AM – 5:30 PM IST',
+    languages: ['Hindi', 'English'],
+    description: 'Dedicated national NGO working to eliminate gender-based violence, providing crisis counseling, gender sensitization, and survivor assistance.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-soar',
+    name: 'SOAR India',
+    category: "Women's Support Organizations",
+    typeOfSupport: 'Survivor Advocacy, Trauma Peer Groups & Support',
+    phone: '+919818822606',
+    website: 'https://www.soar.org.in/',
+    hours: 'Mon – Sat: 10:00 AM – 6:00 PM IST',
+    languages: ['Hindi', 'English'],
+    description: 'Speaking Out Against Rape (SOAR) — Survivor-led NGO offering compassionate peer support groups, trauma healing, and advocacy for sexual violence survivors.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-mava',
+    name: 'MAVA India (Men Against Violence and Abuse)',
+    category: 'Support for Men',
+    typeOfSupport: "Gender Sensitization, Men's Support & Non-Violence Advocacy",
+    phone: '+919819664972',
+    website: 'https://www.mavaindia.org/',
+    hours: 'Mon – Fri: 10:30 AM – 5:30 PM IST',
+    languages: ['English', 'Hindi', 'Marathi'],
+    description: 'Pioneering Indian organization engaging men and boys to stop violence against women, offering confidential counseling and male allyship workshops.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-majlis',
+    name: 'Majlis Manch',
+    category: 'Legal Awareness',
+    typeOfSupport: 'Court Representation & Legal Support for Women & Children',
+    phone: '+919833088041',
+    website: 'https://majlislaw.com/',
+    hours: 'Mon – Sat: 10:00 AM – 6:00 PM IST',
+    languages: ['Hindi', 'English', 'Marathi'],
+    description: 'Society of feminist women lawyers providing comprehensive courtroom legal representation, counseling, and rights advocacy for survivors of sexual violence.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-vaastav',
+    name: 'Vaastav Foundation (Support for Men)',
+    category: 'Support for Men',
+    typeOfSupport: 'Male Survivor Peer Support & Guidance',
+    phone: '+918882498498',
+    website: 'https://vaastav.org/',
+    hours: 'Daily: 10:00 AM – 8:00 PM IST',
+    languages: ['Hindi', 'English'],
+    description: 'Non-governmental organization providing non-judgmental listening, emotional peer support, and resource navigation for male survivors of abuse and distress.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+  {
+    id: 'res-vandrevala',
+    name: 'Vandrevala Foundation Helpline',
+    category: 'Mental Health Support',
+    typeOfSupport: 'Free Mental Health & Crisis Counseling',
+    phone: '+919999666555',
+    whatsapp: '+919999666555',
+    website: 'https://www.vandrevalafoundation.com/',
+    hours: '24/7 Free & Confidential',
+    languages: ['English', 'Hindi', 'Gujarati', 'Marathi', 'Tamil', 'Telugu'],
+    description: 'Renowned mental health non-profit NGO providing immediate crisis de-escalation, emotional support, and trauma-informed guidance with trained counselors.',
+    isGovernment: false,
+    lastVerifiedDate: 'November 2026',
+  },
+];
+
+export const AWARENESS_TOPICS: AwarenessCard[] = [
+  {
+    id: 'aw-1',
+    category: 'Survivor Support',
+    readTime: '4 min read',
+    title: 'Understanding Sexual Violence',
+    subtitle: 'Recognizing the spectrum beyond physical force',
+    summary: 'Sexual violence encompasses any unwanted sexual act, attempt to obtain a sexual act, or other act directed against a person’s sexuality using coercion, manipulation, or force.',
+    details: [
+      'It exists on a wide spectrum: non-physical harassment, stalking, non-consensual image sharing, digital abuse, coercion, and physical assault.',
+      'Perpetrators are known to the survivor in the overwhelming majority of cases, often exploiting relationships of trust.',
+      'Coercion involves emotional guilt, power dynamics, intoxication, or manipulation that erodes genuine free choice.',
+      'Dignity and bodily autonomy belong to every human being regardless of relationship status, gender, or past consent.'
+    ],
+    keyTakeaway: 'Violence is defined by the absence of mutual, autonomous consent—not solely by physical injury.'
+  },
+  {
+    id: 'aw-2',
+    category: 'Consent & Boundaries',
+    readTime: '3 min read',
+    title: 'Consent & Personal Boundaries',
+    subtitle: 'The fundamental standard of mutual dignity',
+    summary: 'Consent is an active, ongoing agreement between participants. It must never be assumed from silence, clothing, relationship history, or lack of physical fight.',
+    details: [
+      'Freely Given: Given without pressure, intoxication, threats, or manipulation of power differentials.',
+      'Reversible: Anyone can change their mind at any moment, regardless of what transpired earlier.',
+      'Informed: Honest and transparent; both parties understand what is happening and the risks involved.',
+      'Enthusiastic: Based on positive desire and mutual willingness, not weary submission or resignation.',
+      'Specific: Saying yes to one act or one time does not constitute consent to other acts or future encounters.'
+    ],
+    keyTakeaway: 'Consent is an ongoing conversation grounded in mutual respect and clear boundaries.'
+  },
+  {
+    id: 'aw-3',
+    category: 'Survivor Support',
+    readTime: '5 min read',
+    title: 'Supporting Survivors Respectfully',
+    subtitle: 'How to be a safe, validating presence',
+    summary: 'When someone discloses an experience of violence or violation, your immediate reaction can shape their entire path toward safety and healing.',
+    details: [
+      'Listen without interrogation: Avoid asking "Why were you there?" or "Why did you wait to tell me?" Interrogation reinforces victim-blaming.',
+      'Affirm and validate: Simple, grounded phrases: "I believe you," "Thank you for trusting me," and "This was not your fault."',
+      'Respect their autonomy: Do not take away their agency by forcing them to report or confront before they are ready. Offer options, not mandates.',
+      'Maintain confidentiality: Never share someone else’s traumatic experience without explicit, informed permission.',
+      'Know your limits: Encourage connection with professional trauma counselors and established support networks.'
+    ],
+    keyTakeaway: 'Your role is not to investigate or judge; your role is to provide compassionate, steady support.'
+  },
+  {
+    id: 'aw-4',
+    category: 'Gender Equality',
+    readTime: '4 min read',
+    title: 'Gender Equality & Inclusivity',
+    subtitle: 'Supporting survivors across all genders',
+    summary: 'While women and girls disproportionately bear the systemic burden of sexual violence, people of all genders—including men and LGBTQ+ individuals—can be survivors.',
+    details: [
+      'Breaking male survivor stigma: Men face severe cultural barriers, false notions of masculinity, and fear of being mocked, leading to profound isolation.',
+      'LGBTQ+ safety: Queer and trans individuals frequently face compounded discrimination, lack of affirming services, and increased vulnerability.',
+      'Intersectionality: Socioeconomic status, caste, disability, and institutional power often intensify systemic vulnerabilities.',
+      'Universal dignity: True equality requires that every survivor receives empathetic listening, medical dignity, and support without bias.'
+    ],
+    keyTakeaway: 'Pain knows no gender boundaries. Empathy, safety, and support must be unconditional.'
+  },
+  {
+    id: 'aw-5',
+    category: 'Due Process',
+    readTime: '4 min read',
+    title: 'Fair Treatment & Due Process',
+    subtitle: 'Responsible discussion, justice, and integrity',
+    summary: 'A civilized society upholds both unwavering support for survivor welfare and strict adherence to institutional fairness, ethical investigation, and due process.',
+    details: [
+      'Rejecting mob justice: Social media witch-hunts and vigilante actions can harm innocent lives while failing to establish lasting institutional safety.',
+      'Independent inquiry: Formal institutions (such as university Internal Complaints Committees - ICC) must conduct unbiased, confidential proceedings.',
+      'Protection against retaliation: Survivors who report must be shielded from institutional retaliation, academic penalties, and social intimidation.',
+      'Constructive discourse: We champion balanced, responsible discussions that prioritize truth, legal safeguards, and structural reform over sensationalism.'
+    ],
+    keyTakeaway: 'True justice requires institutional accountability, fair procedure, and compassionate victim support.'
+  },
+  {
+    id: 'aw-6',
+    category: 'Legal Rights',
+    readTime: '5 min read',
+    title: 'The Importance of Speaking Up Responsibly',
+    subtitle: 'From silence to collective awareness',
+    summary: 'Silence protects abusers and isolates victims. Breaking the silence—whether as a survivor, an active bystander, or a student advocate—creates safer spaces.',
+    details: [
+      'Active Bystander Intervention (The 5Ds): Direct, Distract, Delegate, Delay, and Document to interrupt harm safely.',
+      'Campus responsibility: University students and young adults have a pivotal voice in shaping cultures of consent, dignity, and peer accountability.',
+      'Safe spaces for expression: Providing confidential, moderated platforms where personal truths can be shared without fear.',
+      'Transforming awareness into action: Engaging in open dialogues, educating peers, and standing beside those who feel unheard.'
+    ],
+    keyTakeaway: 'Every voice raised responsibly contributes to a society where dignity triumphs over fear.'
+  }
+];
+
+export const MYTHS_AND_FACTS: MythFact[] = [
+  {
+    id: 'mf-1',
+    category: 'Perpetrators & Context',
+    myth: 'Sexual violence is almost exclusively committed by masked strangers in dark, isolated alleys.',
+    fact: 'Over 80% of sexual violence is perpetrated by someone the survivor knows and often trusts.',
+    explanation: 'Perpetrators are frequently acquaintances, dates, friends, colleagues, partners, or family members. Assault commonly occurs in familiar settings, such as private homes, campuses, or social gatherings. Believing violence only happens in dark alleys creates a false sense of security and leads victims to second-guess their experience when assaulted by someone they knew.'
+  },
+  {
+    id: 'mf-2',
+    category: 'Gender & Stigma',
+    myth: 'Men cannot be victims of sexual violence or coercion.',
+    fact: 'Men and boys can and do experience sexual assault, harassment, and abuse.',
+    explanation: 'Toxic stereotypes dictate that men must always desire sexual encounters or are physically capable of preventing assault. In reality, physiological responses can occur involuntarily during trauma, which perpetrators manipulate to induce guilt. Men face extreme shame, fears of being discredited, and lack of specialized support, making male victimization severely underreported.'
+  },
+  {
+    id: 'mf-3',
+    category: 'Trauma & Reaction',
+    myth: 'If a victim did not physically fight back, scream, or sustain bruises, they must have consented.',
+    fact: 'Tonic immobility (the "freeze" response) is a well-documented neurobiological survival reaction.',
+    explanation: 'When confronted with overwhelming terror or coercion, the brain’s autonomic nervous system often triggers a freeze or appease state. Motor control diminishes, speech becomes impossible, and physical resistance stops. Silence or physical stillness is never consent. Coercion, intoxication, or intimidation entirely invalidates the premise of voluntary agreement.'
+  },
+  {
+    id: 'mf-4',
+    category: 'Clothing & Behavior',
+    myth: 'What a person wears, where they walk at night, or whether they drink alcohol invites or excuses assault.',
+    fact: 'Perpetrators alone bear 100% of the responsibility for committing violence.',
+    explanation: 'Research demonstrates that perpetrators target vulnerability, isolation, and opportunity to assert control—not specific garments. Clothes do not have the power to consent. Holding survivors accountable for an assailant’s deliberate criminal act is the textbook definition of victim-blaming, which shields the offender from culpability.'
+  },
+  {
+    id: 'mf-5',
+    category: 'Allegations & Statistics',
+    myth: 'False accusations of sexual assault are common and frequently made out of revenge or spite.',
+    fact: 'Rigorous empirical studies show false reports represent between 2% and 6% of all allegations.',
+    explanation: 'This low percentage is identical to false reporting rates for virtually any other category of crime (such as burglary or car theft). In contrast, actual sexual offenses remain among the most underreported crimes in the world due to social stigma, fear of legal cross-examination, and familial ostracization.'
+  },
+  {
+    id: 'mf-6',
+    category: 'Reporting & Timelines',
+    myth: 'A genuine survivor would report the assault immediately to the police; delayed claims are suspect.',
+    fact: 'Delayed disclosure is one of the most common and normal psychological responses to trauma.',
+    explanation: 'Survivors routinely grapple with profound shock, memory fragmentation, fear of retaliation from the perpetrator, institutional apathy, and the terror of societal shaming. Many need days, months, or years to process the violation before finding the safety and psychological readiness required to speak.'
+  }
+];
+
+export const INITIAL_STORIES: Story[] = [
+  {
+    id: 'story-sample-1',
+    title: 'The Weight of Silence in College Dorms',
+    authorName: 'Anonymous Survivor',
+    creditPreference: 'Anonymous',
+    category: 'Survivor Experiences',
+    excerpt: 'For almost two years, I carried the feeling that what happened was somehow my misjudgment...',
+    content: "For almost two years, I carried the feeling that what happened was somehow my misjudgment. We were in the same study circle, and when boundaries were crossed after an event, I froze completely. I did not scream, and because of that, I convinced myself I wasn't allowed to call it assault.\n\nLearning about tonic immobility and speaking to a trusted friend was the first time I exhaled. To anyone holding a quiet burden: you do not have to have fought like a warrior for your violation to be real. Your dignity was yours, and it was taken without right.",
+    date: 'Published · October 2026',
+    status: 'Published',
+    consentGiven: true,
+    privacySanitized: true,
+    submittedAt: '2026-10-15T14:32:00Z',
+  },
+  {
+    id: 'story-sample-2',
+    title: 'To the Men Who Think They Cannot Speak',
+    authorName: 'A DTU Student',
+    creditPreference: 'Anonymous with a pseudonym',
+    category: 'Recovery and Support',
+    excerpt: 'In our society, men are conditioned to act like nothing penetrates their armor...',
+    content: "In our society, men are conditioned to act like nothing penetrates their armor. When an older acquaintance coerced me during my freshman year, I buried it under humor and academic pressure.\n\nThe hardest part was not just the incident; it was the suffocating feeling that if I spoke up, people would laugh or say \"you should have enjoyed it.\" Aawaaz Setu gives me hope that we can talk about male survivors without mockery. Stigma dies when we name it plainly.",
+    date: 'Published · October 2026',
+    status: 'Published',
+    consentGiven: true,
+    privacySanitized: true,
+    submittedAt: '2026-10-28T09:15:00Z',
+  },
+  {
+    id: 'story-sample-3',
+    title: 'Finding Footing After Rebuilding Trust',
+    authorName: 'Anonymous Survivor',
+    creditPreference: 'Anonymous',
+    category: 'Personal Reflections',
+    excerpt: 'Healing is not a straight line where you wake up one morning and forget...',
+    content: "Healing is not a straight line where you wake up one morning and forget. It is about slowly reclaiming places, songs, and conversations that once made your chest tighten.\n\nI am writing this to say that surviving is an active daily practice, and the shame was never yours to carry. Keep going.",
+    date: 'Published · November 2026',
+    status: 'Published',
+    consentGiven: true,
+    privacySanitized: true,
+    submittedAt: '2026-11-02T16:40:00Z',
+  }
+];
+
+export const INITIAL_FAQS: FAQItem[] = [
+  // 1. SURVIVOR SUPPORT
+  {
+    id: 'faq-support-1',
+    category: 'Survivor Support',
+    question: 'What immediate medical and emotional steps should a survivor consider after an incident?',
+    answer: 'Prioritize your physical safety and emotional well-being above all else. Under Indian law, you are entitled to free emergency medical examination and treatment at any government hospital without needing immediate police clearance. If relevant, emergency contraception (within 72 hours) and Post-Exposure Prophylaxis (PEP for HIV prevention) should be evaluated by clinical staff. For immediate 24/7 psychological crisis support, dial Tele-MANAS (14416) or the Vandrevala Foundation (+91 9999 666 555).',
+    highlight: 'Free government medical care is guaranteed by law without requiring prior police clearance.',
+  },
+  {
+    id: 'faq-support-2',
+    category: 'Survivor Support',
+    question: 'Are male and LGBTQ+ survivors supported by Aawaaz Setu?',
+    answer: 'Yes, unconditionally. Sexual violence, boundary violations, and coercion affect individuals of all genders. Society often forces men and queer individuals into silence through toxic stereotypes and mockery. Aawaaz Setu provides an empathetic, stigma-free platform for all voices, and connects male survivors with specialized organizations like the Vaastav Foundation (+91 8882 498 498).',
+    highlight: 'All genders deserve dignity, belief, and compassionate support.',
+  },
+  {
+    id: 'faq-support-3',
+    category: 'Survivor Support',
+    question: "What is 'tonic immobility' or the freeze response during an assault?",
+    answer: 'Trauma triggers autonomic nervous system survival states—Fight, Flight, Freeze, or Fawn. Tonic immobility (freezing) is an involuntary biological survival reflex where the body temporarily paralyzes under overwhelming distress. Freezing or complying out of fear is NOT consent. Silence or an inability to physically struggle is never consent.',
+    highlight: 'Involuntary freezing under terror is a biological reflex, never consent.',
+  },
+  {
+    id: 'faq-support-4',
+    category: 'Survivor Support',
+    question: 'How can I safely support a friend or peer who has confided in me?',
+    answer: "Believe them unconditionally. Do not ask interrogative questions like 'Why were you there?' or 'Why didn't you leave?'. Reassure them that what happened was not their fault. Offer your quiet presence, respect their pace, protect their confidentiality, and never report on their behalf without their explicit consent unless they face imminent physical danger.",
+    highlight: 'Listen with empathy, preserve confidentiality, and never victim-blame.',
+  },
+
+  // 2. LEGAL RIGHTS
+  {
+    id: 'faq-legal-1',
+    category: 'Legal Rights',
+    question: "What is a 'Zero FIR' and how does it protect survivors in India?",
+    answer: 'Under Indian criminal jurisprudence, any police station across the nation is legally obligated to register an FIR (Zero FIR) for a cognizable sexual offence, regardless of the jurisdictional boundary where the crime occurred. Police officers cannot turn a survivor away or cite jurisdiction; they must register the complaint immediately and subsequently transfer the investigation to the appropriate precinct.',
+    highlight: 'Any police station in India must register a Zero FIR regardless of where the incident occurred.',
+  },
+  {
+    id: 'faq-legal-2',
+    category: 'Legal Rights',
+    question: 'Am I entitled to free legal aid in India?',
+    answer: 'Yes. Under Section 12 of the Legal Services Authorities Act (NALSA), all women, children, and persons in custody are entitled to 100% free legal aid, legal counsel, and courtroom representation regardless of their income bracket. You can access free legal counsel by calling the NALSA 24/7 toll-free helpline at 15100 or visiting your local District Legal Services Authority (DLSA).',
+    highlight: 'Free legal aid is guaranteed to all women under NALSA (Dial 15100).',
+  },
+  {
+    id: 'faq-legal-3',
+    category: 'Legal Rights',
+    question: 'What is the POSH Act and how does it function in universities and workplaces?',
+    answer: 'The Sexual Harassment of Women at Workplace Act (2013) mandates that every university, college, and registered institution maintain an active Internal Complaints Committee (ICC). The ICC must be headed by a senior woman faculty member, include an external non-governmental member, conduct confidential, time-bound inquiries within 90 days, and has the authority to issue interim safety measures (such as hostel transfer, academic leave, or no-contact orders) to protect the complainant.',
+    highlight: 'Every university ICC must conduct confidential inquiries within 90 days.',
+  },
+  {
+    id: 'faq-legal-4',
+    category: 'Legal Rights',
+    question: 'How should electronic and digital harassment evidence be preserved?',
+    answer: 'Preserve digital integrity immediately: take full-screen screenshots displaying timestamps, dates, phone numbers, and social handles. Export chat histories before they can be deleted (e.g., WhatsApp export or cloud backup). Store backups on a secure, separate external drive or email them to a private account with two-factor authentication enabled. Avoid replying with inflammatory remarks.',
+    highlight: 'Screenshot timestamps and backup cloud records before threads can be deleted.',
+  },
+
+  // 3. AAWAAZ SETU'S MISSION
+  {
+    id: 'faq-mission-1',
+    category: "Aawaaz Setu's Mission",
+    question: 'What is Aawaaz Setu and who founded it?',
+    answer: 'Aawaaz Setu is an independent, student-led awareness and survivor-solidarity platform founded by DTU undergraduate student Shreyansh Gupta and co-founded by USICT student Shorya Panchal. Our mission is to challenge silence, champion mental health awareness and emotional well-being, educate campus communities about consent and rights, combat victim-blaming, and bridge individuals with accredited professional helplines.',
+    highlight: 'Founded by DTU student Shreyansh Gupta and co-founded by USICT student Shorya Panchal.',
+  },
+  {
+    id: 'faq-mission-2',
+    category: "Aawaaz Setu's Mission",
+    question: 'Is Aawaaz Setu a registered NGO or government body?',
+    answer: 'No. In the spirit of complete transparency, Aawaaz Setu is an independent, non-commercial student initiative. It is not currently a registered NGO, registered trust, or government body. We do not solicit donations, run advertising, or claim formal institutional affiliations.',
+    highlight: 'An independent student-led peer initiative, not a registered NGO.',
+  },
+  {
+    id: 'faq-mission-3',
+    category: "Aawaaz Setu's Mission",
+    question: 'Does Aawaaz Setu provide licensed therapy or legal representation?',
+    answer: 'No. Aawaaz Setu is strictly an educational awareness platform and support connector. We do not provide licensed medical diagnoses, psychiatric therapy, formal police investigations, or legal courtroom representation. Instead, we connect visitors with verified, accredited resources such as Tele-MANAS (14416), NCW (7827170170), and NALSA (15100).',
+    highlight: 'We are an educational connector, not a replacement for licensed clinical or legal professionals.',
+  },
+  {
+    id: 'faq-mission-4',
+    category: "Aawaaz Setu's Mission",
+    question: 'How can university students collaborate or get involved?',
+    answer: 'Students can get involved by sharing educational toolkits on campus, participating in bystander awareness discussions, contributing anonymous survivor insights, or joining future student volunteer cohorts. To collaborate or propose university initiatives, email Shreyansh directly at ProjectAawaazUni@gmail.com.',
+    highlight: 'Reach out via ProjectAawaazUni@gmail.com to lead campus awareness initiatives.',
+  },
+
+  // 4. STORY SUBMISSION & CONFIDENTIALITY
+  {
+    id: 'faq-story-1',
+    category: 'Story Submission',
+    question: 'Will my submitted story be automatically published on the website?',
+    answer: 'Never. Submissions are never published automatically. Each story undergoes careful human review by our editorial team. Furthermore, stories are only published if the author has provided separate, explicit written consent for public display.',
+    highlight: 'Submissions are never published automatically; human review and consent are mandatory.',
+  },
+  {
+    id: 'faq-story-2',
+    category: 'Story Submission',
+    question: 'Can I share a personal confession without it being published on the website?',
+    answer: 'Yes, absolutely. Publication consent is completely optional. If you just want to share your experience to be heard by the initiative team without having it displayed on the website, you can simply uncheck the publication consent box.',
+    highlight: 'Private confessions remain completely confidential to our editorial team.',
+  },
+  {
+    id: 'faq-story-3',
+    category: 'Story Submission',
+    question: 'How does Aawaaz Setu protect privacy and prevent de-anonymization?',
+    answer: 'Before any story is approved for publication, all identifying details—including real names of individuals, universities, specific hostels, phone numbers, or residential addresses—are sanitized and removed to preserve dignity and privacy.',
+    highlight: 'All real names, locations, and institutional tags are strictly scrubbed.',
+  },
+  {
+    id: 'faq-support-male',
+    category: 'Survivor Support',
+    question: 'Does Aawaaz Setu support male survivors?',
+    answer: 'Absolutely. Aawaaz Setu recognises that sexual abuse and harassment can affect people of all genders. Male survivors deserve the same dignity, respect, and access to support.',
+    highlight: 'Aawaaz Setu recognises that sexual abuse affects all genders; male survivors deserve equal dignity and support.',
+  },
+  {
+    id: 'faq-support-friend',
+    category: 'Survivor Support',
+    question: 'What if I am supporting a friend?',
+    answer: 'Listen respectfully, avoid judgment, protect their privacy, and encourage them to seek help from someone qualified or trusted. Do not pressure them to disclose more than they want to.',
+    highlight: 'Listen respectfully, protect privacy, avoid judgment, and do not pressure them.',
+  },
+  {
+    id: 'faq-mission-contribute',
+    category: "Aawaaz Setu's Mission",
+    question: 'How can I contribute to Aawaaz Setu?',
+    answer: 'You can contribute by spreading awareness, sharing educational content responsibly, encouraging respectful conversations, and helping others find appropriate support resources.',
+    highlight: 'Spread awareness, share educational content, and encourage respectful dialogues.',
+  },
+  {
+    id: 'faq-mission-contact',
+    category: "Aawaaz Setu's Mission",
+    question: 'How can I contact Aawaaz Setu?',
+    answer: 'Visitors can use the contact information listed on our website to reach the initiative regarding awareness activities, story submissions, collaboration opportunities, or general enquiries.',
+    highlight: 'Reach out through our official website contact channels or direct email.',
+  },
+  {
+    id: 'faq-story-confidentiality',
+    category: 'Story Submission',
+    question: 'Is my information completely confidential?',
+    answer: "Aawaaz Setu aims to respect visitor privacy. However, we cannot promise complete confidentiality unless the website's data collection and storage practices support that promise. Please review our Privacy Policy before sharing sensitive information.",
+    highlight: 'We respect privacy, but cannot promise absolute confidentiality; review our Privacy Policy before sharing.',
+  },
+];
+
+export const LEGAL_FRAMEWORKS = [
+  {
+    title: 'POSH Act (2013) & Campus ICC',
+    authority: 'Prevention of Sexual Harassment at Workplace & Universities',
+    summary: 'Applies to universities, colleges, and workplaces. Every institution must have an active Internal Complaints Committee (ICC) headed by a senior woman.',
+    keyPoints: [
+      'Mandates a time-bound, confidential inquiry into sexual harassment complaints.',
+      'Provides interim relief such as changing supervisors, hostel reassignment, or leave during inquiry.',
+      'Defines hostile work/study environment and quid pro quo harassment with strict accountability.'
+    ]
+  },
+  {
+    title: 'POCSO Act (2012)',
+    authority: 'Protection of Children from Sexual Offences',
+    summary: 'Gender-neutral protection for individuals under 18 years of age. Stringent legal protections and child-friendly reporting procedures.',
+    keyPoints: [
+      'Strict confidentiality: Prohibits revealing the identity of minor survivors in any media.',
+      'Mandatory reporting obligations for teachers, doctors, and institutions who become aware of offences.',
+      'Special fast-track courts and video-assisted statement recording to minimize re-traumatization.'
+    ]
+  },
+  {
+    title: 'Bharatiya Nyaya Sanhita (BNS) & Criminal Law',
+    authority: 'National Penal Framework',
+    summary: 'Codifies criminal offences regarding non-consensual sexual acts, stalking, voyeurism, and criminal force.',
+    keyPoints: [
+      'Zero FIR: An FIR can be registered at ANY police station regardless of jurisdiction where the incident occurred.',
+      'Right to Free Legal Aid: Survivors are entitled to free legal counsel under the Legal Services Authorities Act (15100).',
+      'Victim Compensation Scheme: State-mandated financial compensation for medical and rehabilitative care.'
+    ]
+  }
+];

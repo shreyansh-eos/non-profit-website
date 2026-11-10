@@ -1,0 +1,8 @@
+{
+  "name": "Aawaaz Setu",
+  "description": "An independent, student-led awareness initiative started by DTU student Shreyansh Gupta dedicated to breaking silence on sexual violence, supporting survivors of all genders, and championing equality, dignity, and fair discussion.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
