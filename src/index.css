@@ -12,6 +12,24 @@
   --color-muted: #687385;
 }
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: clip;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  max-width: 100%;
+  overflow-x: clip;
+  width: 100%;
+}
+
 body {
   font-family: var(--font-sans);
   background-color: #F8F7F3;
@@ -48,5 +66,29 @@ body {
   background: linear-gradient(90deg, #F0EFEA 0%, #E2E1DA 50%, #F0EFEA 100%);
   background-size: 200% 100%;
   animation: shimmer 1.8s infinite ease-in-out;
+}
+
+/* Print styling for Personal Safety Plan */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #17243A !important;
+  }
+  .no-print, header, nav, footer, #top, section:not(#resources) {
+    display: none !important;
+  }
+  .safety-plan-modal-backdrop {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  .safety-plan-modal-content {
+    box-shadow: none !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    border: 1px solid #17243A !important;
+    border-radius: 0 !important;
+  }
 }
 

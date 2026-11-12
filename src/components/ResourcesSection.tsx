@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { ResourceCardSkeleton } from './SkeletonLoaders';
 import { FaqAccordion } from './FaqAccordion';
+import { PersonalSafetyPlanModal } from './PersonalSafetyPlanModal';
 
 export const ResourcesSection: React.FC = () => {
   // Box breathing interactive states
@@ -105,52 +106,22 @@ export const ResourcesSection: React.FC = () => {
     return () => clearInterval(timer);
   }, [breathingActive, breathPhase]);
 
-  const handleDownloadSafetyPlan = () => {
-    const safetyPlanText = `AAWAAZ SETU — PERSONAL SAFETY & CRISIS CHECKLIST
-Initiative: Aawaaz Setu (Every Voice Deserves to Be Heard)
-Official Email: ProjectAawaazUni@gmail.com
-----------------------------------------------------------------------
-DISCLAIMER: Aawaaz Setu is an awareness initiative, not an emergency service.
-In immediate danger, dial 112 (National Emergency Helpline) or 1091 (Women Helpline).
+  // Safety plan interactive modal state
+  const [safetyPlanOpen, setSafetyPlanOpen] = useState(false);
+  const [hasSavedPlan, setHasSavedPlan] = useState(() => {
+    try {
+      return !!localStorage.getItem('aawaaz_setu_safety_plan');
+    } catch {
+      return false;
+    }
+  });
 
-1. TRUSTED CONTACT NETWORK
-[ ] Identify 2-3 trusted individuals (friend, sibling, mentor) who will answer in an emergency.
-[ ] Establish an innocuous distress codeword or emoji with your trusted circle (e.g., "Need that textbook").
-[ ] Keep local emergency contacts on your phone's speed dial / lock screen emergency medical card.
-
-2. DIGITAL PRIVACY & EVIDENCE SAFETY
-[ ] Take screenshots of threatening messages, social media harassment, or call logs immediately.
-[ ] Store digital evidence on a secure, separate cloud drive (or email copies to a secondary trusted account).
-[ ] Enable two-factor authentication (2FA) on your personal email and social media accounts.
-[ ] Regularly review apps that have access to your location services.
-
-3. PHYSICAL & CAMPUS SAFE HAVENS
-[ ] Identify safe physical rooms on campus or near home (warden office, security desk, 24-hr cafe/library).
-[ ] Know the contact and location of your university's Internal Complaints Committee (ICC) office.
-[ ] Keep essential documents (ID, student card, emergency cash) easily accessible if you need to leave quickly.
-
-4. HEALTH & FORENSIC MEDICAL CARE (IF ASSAULT HAS OCCURRED)
-[ ] Seek medical care at the nearest government hospital as early as possible.
-[ ] You have the right to free medical examination and treatment without requiring immediate police clearance.
-[ ] If feasible, avoid bathing, combing hair, or changing clothing prior to medical examination to preserve DNA forensics.
-[ ] Emergency contraception (within 72 hours) and Post-Exposure Prophylaxis (PEP for HIV) should be evaluated by medical staff.
-
-5. LEGAL RIGHTS CHEAT-SHEET
-- ZERO FIR: You can file an FIR at ANY police station, regardless of territorial jurisdiction.
-- FREE LEGAL AID: Under NALSA (15100), women and vulnerable persons are entitled to free legal counsel.
-- POSH ACT: Campus ICC must conduct time-bound, confidential proceedings with interim safety measures.
-
-Issued in public awareness by Aawaaz Setu.`;
-
-    const blob = new Blob([safetyPlanText], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'Aawaaz_Setu_Personal_Safety_Plan.txt';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+  const checkSavedPlan = () => {
+    try {
+      setHasSavedPlan(!!localStorage.getItem('aawaaz_setu_safety_plan'));
+    } catch {
+      setHasSavedPlan(false);
+    }
   };
 
   const topicFilters = [
@@ -555,18 +526,26 @@ Issued in public awareness by Aawaaz Setu.`;
             </div>
           </div>
 
-          {/* Downloadable Safety Plan Card */}
+          {/* Interactive Personal Emergency Safety Plan Card */}
           <div className="lg:col-span-5 bg-[#17243A] text-white rounded-3xl p-6 sm:p-8 shadow-sm flex flex-col justify-between border border-[#17243A]">
             <div>
-              <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#EAE5F5] mb-3">
-                <FileText className="w-4 h-4 text-[#5B8F8A]" />
-                <span>Printable Safety Kit</span>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#EAE5F5]">
+                  <FileText className="w-4 h-4 text-[#5B8F8A]" />
+                  <span>Interactive Safety Kit</span>
+                </div>
+                {hasSavedPlan && (
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-semibold flex items-center gap-1">
+                    <ShieldCheck className="w-3 h-3" />
+                    <span>Plan Active on Device</span>
+                  </span>
+                )}
               </div>
               <h3 className="font-serif text-2xl font-bold mb-3 text-white">
                 Personal Emergency Safety Plan
               </h3>
               <p className="text-xs sm:text-sm text-[#EEF3F8]/85 leading-relaxed mb-6 font-normal">
-                A structured, text-based checklist designed for students and young adults. Covers emergency contacts, code words, forensic preservation guidelines, and digital evidence protection.
+                Build your own confidential, personalized crisis checklist directly in your browser. Configure trusted contacts, campus safe havens, secret distress code words, and forensic evidence safeguards.
               </p>
 
               <div className="space-y-2.5 text-xs text-[#EEF3F8]/80 mb-8">
@@ -576,26 +555,31 @@ Issued in public awareness by Aawaaz Setu.`;
                 </div>
                 <div className="flex items-center gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#5B8F8A]" />
-                  <span>Forensic evidence protection protocols</span>
+                  <span>Safe places & 24/7 havens directory</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#5B8F8A]" />
-                  <span>Campus safe room identification steps</span>
+                  <span>Private distress code word & emergency actions</span>
                 </div>
                 <div className="flex items-center gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#5B8F8A]" />
-                  <span>Zero FIR rights plain-language sheet</span>
+                  <span>Zero FIR rights, digital safety & print-ready export</span>
                 </div>
               </div>
             </div>
 
-            <button
-              onClick={handleDownloadSafetyPlan}
-              className="w-full py-3.5 px-4 bg-[#5B8F8A] hover:bg-[#4d7d78] text-white font-bold text-xs rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
-            >
-              <Download className="w-4 h-4 text-[#EAE5F5]" />
-              <span>Download Safety Plan (.txt)</span>
-            </button>
+            <div className="space-y-2 pt-2">
+              <button
+                onClick={() => setSafetyPlanOpen(true)}
+                className="w-full py-3.5 px-4 bg-[#5B8F8A] hover:bg-[#4d7d78] text-white font-bold text-xs rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs flex items-center justify-center gap-2 cursor-pointer shadow-2xs group"
+              >
+                <Shield className="w-4 h-4 text-[#EAE5F5] group-hover:scale-110 transition-transform" />
+                <span>{hasSavedPlan ? 'View & Edit My Safety Plan' : 'Create My Safety Plan'}</span>
+              </button>
+              <p className="text-[10px] text-center text-[#EEF3F8]/60">
+                100% private: stored exclusively on your device. Never sent to any server.
+              </p>
+            </div>
           </div>
 
         </div>
@@ -699,6 +683,13 @@ Issued in public awareness by Aawaaz Setu.`;
         </div>
 
       </div>
+
+      {/* Personal Safety Plan Interactive Modal */}
+      <PersonalSafetyPlanModal
+        isOpen={safetyPlanOpen}
+        onClose={() => setSafetyPlanOpen(false)}
+        onPlanUpdated={checkSavedPlan}
+      />
     </section>
   );
 };

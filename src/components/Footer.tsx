@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Mail, Check, ArrowRight } from 'lucide-react';
+import { Lock, Mail, Check, ArrowRight, Linkedin, ExternalLink } from 'lucide-react';
 import { SiteConfig } from '../types';
 
 interface FooterProps {
@@ -7,6 +7,7 @@ interface FooterProps {
   onOpenPrivacy: () => void;
   onOpenDisclaimer: () => void;
   onOpenAdmin: () => void;
+  onOpenConversationLookup?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
@@ -14,6 +15,7 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenPrivacy,
   onOpenDisclaimer,
   onOpenAdmin,
+  onOpenConversationLookup,
 }) => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
@@ -80,13 +82,28 @@ export const Footer: React.FC<FooterProps> = ({
               An independent student-led awareness initiative bridging silence with solidarity, dedicated to promoting survivor dignity, equality, and accessible support resources.
             </p>
 
-            <div className="text-xs text-[#EEF3F8]/60 pt-2">
+            <div className="text-xs text-[#EEF3F8]/60 pt-2 flex flex-wrap items-center gap-2">
               <span>Official Email: </span>
               <a
                 href={`mailto:${config.email}`}
                 className="text-white hover:text-[#5B8F8A] underline transition-colors"
               >
                 {config.email}
+              </a>
+            </div>
+
+            {/* Official LinkedIn Connect Button */}
+            <div className="pt-1">
+              <a
+                href={config.linkedinUrl || 'https://www.linkedin.com/in/aawaaz-setu-889b5b449'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-[#0077B5]/25 hover:bg-[#0077B5] text-white border border-[#0077B5]/40 transition-all duration-200 text-xs font-semibold cursor-pointer shadow-2xs group"
+                title="Connect with Aawaaz Setu on LinkedIn"
+              >
+                <Linkedin className="w-3.5 h-3.5 fill-current text-[#EAE5F5] group-hover:text-white transition-colors" />
+                <span>Connect on LinkedIn</span>
+                <ExternalLink className="w-3 h-3 text-[#EEF3F8]/70 group-hover:text-white transition-colors" />
               </a>
             </div>
 
@@ -149,11 +166,32 @@ export const Footer: React.FC<FooterProps> = ({
               <a href="#about" className="hover:text-white transition-colors">About Us</a>
               <a href="#founder" className="hover:text-white transition-colors">Meet Founder</a>
               <a href="#awareness" className="hover:text-white transition-colors">Awareness</a>
-              <a href="#share-story" className="hover:text-white transition-colors">Share Your Story</a>
               <a href="#stories" className="hover:text-white transition-colors">Survivor Stories</a>
+              <a href="#honourable-mentions" className="hover:text-white transition-colors">Honourable Mentions</a>
+              <a href="#share-story" className="hover:text-white transition-colors">Share Your Story</a>
               <a href="#support" className="hover:text-white transition-colors">Find Support</a>
               <a href="#resources" className="hover:text-white transition-colors">Resources</a>
+              <a href="#volunteer" className="hover:text-white transition-colors font-medium text-[#EAE5F5]">Join Volunteer</a>
               <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+              {onOpenConversationLookup && (
+                <button
+                  type="button"
+                  onClick={onOpenConversationLookup}
+                  className="text-left text-[#5B8F8A] hover:text-white transition-colors cursor-pointer"
+                >
+                  Track My Story
+                </button>
+              )}
+              <a
+                href={config.linkedinUrl || 'https://www.linkedin.com/in/aawaaz-setu-889b5b449'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors flex items-center gap-1"
+                title="Aawaaz Setu on LinkedIn"
+              >
+                <span>LinkedIn</span>
+                <ExternalLink className="w-2.5 h-2.5 opacity-70" />
+              </a>
               <button
                 type="button"
                 onClick={onOpenPrivacy}

@@ -108,3 +108,59 @@ export interface SiteConfig {
   twitterUrl: string;
   youtubeUrl: string;
 }
+
+export interface TrustedContact {
+  id: string;
+  name: string;
+  relationship: string;
+  phone: string;
+  notes?: string;
+  knowsCodeWord?: boolean;
+  canHost?: boolean;
+}
+
+export interface SafePlace {
+  id: string;
+  name: string;
+  type: string;
+  addressOrLocation: string;
+  howToGetThere?: string;
+  contactPerson?: string;
+}
+
+export interface SafetyChecklistItem {
+  id: string;
+  step: string;
+  category: 'Immediate' | 'Transport' | 'Legal' | 'Medical' | 'Digital';
+  completed: boolean;
+}
+
+export interface PersonalSafetyPlan {
+  updatedAt?: string;
+  trustedContacts: TrustedContact[];
+  safePlaces: SafePlace[];
+  emergencyChecklist: SafetyChecklistItem[];
+  codeWord: {
+    phrase: string;
+    meaning: string;
+    duressEmoji?: string;
+    instructionsForContact: string;
+  };
+  digitalSafety: {
+    locationSharingOff: boolean;
+    passwordsUpdated: boolean;
+    twoFactorEnabled: boolean;
+    screenshotsPreserved: boolean;
+    deviceMonitoredWarning: boolean;
+    emergencySosConfigured: boolean;
+    customTips: string[];
+  };
+  supportPreferences: {
+    preferredHelpline: string;
+    nearestHospital: string;
+    nearestPoliceStation: string;
+    iccContact: string;
+  };
+  personalNotes: string;
+  emergencyBagItems: string;
+}

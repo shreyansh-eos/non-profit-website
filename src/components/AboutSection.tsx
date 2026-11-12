@@ -18,11 +18,12 @@ import {
   UserCheck,
   Linkedin,
   ExternalLink,
+  Shield,
 } from 'lucide-react';
 
 export const AboutSection: React.FC = () => {
-  // Toggle between Founder (Shreyansh), Co-Founder (Shorya), and HR Manager (Anubhav)
-  const [activeLeader, setActiveLeader] = useState<'shreyansh' | 'shorya' | 'anubhav'>('shreyansh');
+  // Toggle between Founder (Shreyansh), Managing Director (Paritosh), Co-Founder (Shorya), and HR Manager (Anubhav)
+  const [activeLeader, setActiveLeader] = useState<'shreyansh' | 'paritosh' | 'shorya' | 'anubhav'>('shreyansh');
 
   // Support toggling between the 2 founder photographs for Shreyansh
   const [selectedShreyanshPhoto, setSelectedShreyanshPhoto] = useState<'formal' | 'campus'>('formal');
@@ -156,7 +157,7 @@ export const AboutSection: React.FC = () => {
                 </h3>
               </div>
 
-              {/* 3 Leader Switcher Pills */}
+              {/* 4 Leader Switcher Pills */}
               <div className="flex flex-wrap items-center gap-1.5 bg-[#EEF3F8] p-1.5 rounded-2xl border border-[#17243A]/10">
                 <button
                   type="button"
@@ -175,6 +176,25 @@ export const AboutSection: React.FC = () => {
                     />
                   </div>
                   <span>Shreyansh Gupta · Founder</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveLeader('paritosh')}
+                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                    activeLeader === 'paritosh'
+                      ? 'bg-[#17243A] text-white shadow-xs'
+                      : 'text-[#252B35]/80 hover:text-[#17243A] hover:bg-white/60'
+                  }`}
+                >
+                  <div className="w-5 h-5 rounded-full overflow-hidden bg-white/20 shrink-0">
+                    <img
+                      src="./assets/aistudio/WhatsApp_Image_2026-11-11_at_8.16.12_PM_2ff73539.jpeg"
+                      alt="Paritosh Rana"
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
+                  <span>Paritosh Rana · Managing Director</span>
                 </button>
 
                 <button
@@ -391,14 +411,27 @@ export const AboutSection: React.FC = () => {
 
                       <div className="pt-2 flex flex-wrap items-center gap-3">
                         <a
-                          href="https://www.linkedin.com/in/shreyansh-gupta-b85ab833b"
+                          href="https://www.linkedin.com/in/aawaaz-setu-889b5b449"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="px-4 py-2.5 rounded-xl bg-[#0077B5] hover:bg-[#005f93] text-white text-xs font-semibold shadow-xs hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2 cursor-pointer border border-[#0077B5]"
+                          title="Official Aawaaz Setu LinkedIn Account"
                         >
                           <Linkedin className="w-3.5 h-3.5 fill-current" />
-                          <span>Follow Shreyansh Gupta on LinkedIn</span>
+                          <span>Connect on LinkedIn (Aawaaz Setu)</span>
                           <ExternalLink className="w-3 h-3 text-white/80" />
+                        </a>
+
+                        <a
+                          href="https://www.linkedin.com/in/shreyansh-gupta-b85ab833b"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-4 py-2.5 rounded-xl bg-white hover:bg-[#EEF3F8] text-[#0077B5] text-xs font-semibold shadow-2xs hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2 cursor-pointer border border-[#0077B5]/30"
+                          title="Follow Founder Shreyansh Gupta on LinkedIn"
+                        >
+                          <Linkedin className="w-3.5 h-3.5 fill-current" />
+                          <span>Founder's LinkedIn</span>
+                          <ExternalLink className="w-3 h-3 text-[#0077B5]" />
                         </a>
 
                         <a
@@ -411,19 +444,160 @@ export const AboutSection: React.FC = () => {
 
                         <button
                           type="button"
-                          onClick={() => setActiveLeader('shorya')}
+                          onClick={() => setActiveLeader('paritosh')}
                           className="px-4 py-2.5 rounded-xl bg-transparent hover:bg-white/80 text-[#687385] hover:text-[#17243A] text-xs font-medium transition-all duration-200 cursor-pointer flex items-center gap-1.5 ml-auto"
                         >
-                          <span>Meet Co-Founder Shorya</span>
+                          <span>Meet Managing Director Paritosh</span>
                           <span aria-hidden="true">→</span>
                         </button>
                       </div>
                     </div>
                   </div>
                 </motion.div>
+              ) : activeLeader === 'paritosh' ? (
+                /* ========================================================= */
+                /* 2. PARITOSH RANA — MANAGING DIRECTOR PROFILE              */
+                /* ========================================================= */
+                <motion.div
+                  key="paritosh"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.3 }}
+                  className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center"
+                >
+                  {/* Left Column: Managing Director Portrait */}
+                  <div className="lg:col-span-5 flex flex-col items-center">
+                    <div className="w-full max-w-md bg-white p-3 sm:p-4 rounded-3xl border border-[#17243A]/10 shadow-md">
+                      
+                      {/* Photo Container */}
+                      <div className="relative aspect-[3/4] w-full rounded-2xl overflow-hidden bg-[#17243A]/5 border border-[#17243A]/10 group">
+                        <img
+                          src="./assets/aistudio/WhatsApp_Image_2026-11-11_at_8.16.12_PM_2ff73539.jpeg"
+                          alt="Paritosh Rana — Managing Director of Aawaaz Setu"
+                          className="w-full h-full object-cover object-center transition-all duration-500 group-hover:scale-[1.02]"
+                          loading="eager"
+                        />
+
+                        {/* Managing Director Badge Overlay */}
+                        <div className="absolute top-3 right-3 bg-[#17243A]/85 backdrop-blur-md px-3 py-1 rounded-xl border border-white/20 shadow-xs text-white text-[11px] font-semibold flex items-center gap-1.5">
+                          <Shield className="w-3 h-3 text-[#5B8F8A]" />
+                          <span>Managing Director</span>
+                        </div>
+
+                        {/* Bottom Image Overlay Tag */}
+                        <div className="absolute bottom-0 inset-x-0 bg-linear-to-t from-[#17243A]/90 via-[#17243A]/50 to-transparent p-4 text-white flex items-end justify-between">
+                          <div>
+                            <p className="text-sm font-semibold tracking-wide">Paritosh Rana</p>
+                            <p className="text-[11px] text-[#EAE5F5]">Operations & Strategic Leadership</p>
+                          </div>
+                          <div className="w-7 h-7 rounded-lg bg-white/20 backdrop-blur-xs flex items-center justify-center text-white">
+                            <Shield className="w-3.5 h-3.5 text-[#5B8F8A]" />
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Caption Below the Image */}
+                      <div className="pt-3.5 pb-1 text-center">
+                        <p className="text-xs font-semibold text-[#17243A] tracking-tight">
+                          Paritosh Rana | Managing Director, Aawaaz Setu
+                        </p>
+                        <p className="text-[11px] text-[#687385] mt-0.5">
+                          Leadership, Operational Discipline & Due Process
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Operational Credentials Badges */}
+                    <div className="w-full max-w-md mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <div className="p-2.5 rounded-xl bg-white border border-[#17243A]/10 flex items-center gap-2 text-[#252B35] shadow-2xs">
+                        <div className="w-7 h-7 rounded-lg bg-[#EEF3F8] text-[#17243A] flex items-center justify-center shrink-0">
+                          <Shield className="w-4 h-4 text-[#5B8F8A]" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-[11px] text-[#17243A] truncate">Operations Lead</p>
+                          <p className="text-[10px] text-[#687385] truncate">Strategic Direction</p>
+                        </div>
+                      </div>
+
+                      <div className="p-2.5 rounded-xl bg-white border border-[#17243A]/10 flex items-center gap-2 text-[#252B35] shadow-2xs">
+                        <div className="w-7 h-7 rounded-lg bg-[#EEF3F8] text-[#17243A] flex items-center justify-center shrink-0">
+                          <Briefcase className="w-4 h-4 text-[#5B8F8A]" />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-semibold text-[11px] text-[#17243A] truncate">Due Process</p>
+                          <p className="text-[10px] text-[#687385] truncate">Campaign Scaling</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column: Managing Director Narrative */}
+                  <div className="lg:col-span-7 space-y-5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#17243A] text-white text-[11px] font-bold tracking-wider uppercase shadow-2xs">
+                        <Shield className="w-3 h-3 text-[#5B8F8A]" />
+                        <span>MANAGING DIRECTOR — AAWAAZ SETU</span>
+                      </span>
+                      <span className="text-xs font-semibold text-[#5B8F8A]">
+                        Executive Leadership & Strategic Operations
+                      </span>
+                    </div>
+
+                    <div>
+                      <h3 className="font-serif text-3xl sm:text-4xl font-bold text-[#17243A] tracking-tight">
+                        Meet the Managing Director: Paritosh Rana
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#5B8F8A] font-medium mt-1">
+                        Managing Director, Aawaaz Setu
+                      </p>
+                    </div>
+
+                    <div className="space-y-3.5 text-sm sm:text-base text-[#252B35]/90 leading-relaxed font-normal">
+                      <p>
+                        “Hello, I’m <strong className="text-[#17243A] font-semibold">Paritosh Rana</strong>, the Managing Director of Aawaaz Setu. My journey taught me that true leadership is defined by the responsibility we take for the safety and dignity of those around us.”
+                      </p>
+                      <p>
+                        “At Aawaaz Setu, my mission is to channel that same sense of duty into breaking the silence surrounding sexual violence and mental health struggles.”
+                      </p>
+                      <p>
+                        “By combining structured operational discipline with deep empathy, I work alongside our student leadership team to scale our campus campaigns, champion due process, and ensure that no survivor ever has to navigate their healing journey alone.”
+                      </p>
+                    </div>
+
+                    {/* Pull Quote Box */}
+                    <div className="p-5 sm:p-6 bg-[#17243A] text-white rounded-2xl shadow-xs border border-white/10 relative">
+                      <Quote className="w-6 h-6 text-[#5B8F8A] mb-2 opacity-80" />
+                      <p className="font-serif italic text-base sm:text-lg leading-relaxed text-[#F8F7F3]">
+                        “Courage is the bridge between silence and solidarity. Our duty at Aawaaz Setu is to make sure that bridge never breaks.”
+                      </p>
+                      <p className="text-xs text-[#5B8F8A] font-medium mt-3">
+                        — Paritosh Rana, Managing Director
+                      </p>
+                    </div>
+
+                    <div className="pt-2 flex flex-wrap items-center gap-3">
+                      <a
+                        href="#contact"
+                        className="px-5 py-2.5 rounded-xl bg-[#17243A] hover:bg-[#252B35] text-white text-xs font-semibold shadow-xs hover:-translate-y-0.5 transition-all duration-200 flex items-center gap-2 cursor-pointer border border-[#17243A]"
+                      >
+                        <Mail className="w-3.5 h-3.5 text-[#EAE5F5]" />
+                        <span>Connect With Paritosh</span>
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => setActiveLeader('shorya')}
+                        className="px-5 py-2.5 rounded-xl bg-white hover:bg-[#EEF3F8] text-[#17243A] text-xs font-semibold border border-[#17243A]/15 hover:border-[#5B8F8A]/40 shadow-2xs hover:-translate-y-0.5 transition-all duration-200 cursor-pointer flex items-center gap-1.5"
+                      >
+                        <span>Meet Co-Founder Shorya</span>
+                        <span aria-hidden="true">→</span>
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
               ) : activeLeader === 'shorya' ? (
                 /* ========================================================= */
-                /* 2. SHORYA PANCHAL — CO-FOUNDER PROFILE                    */
+                /* 3. SHORYA PANCHAL — CO-FOUNDER PROFILE                    */
                 /* ========================================================= */
                 <motion.div
                   key="shorya"
@@ -712,12 +886,12 @@ export const AboutSection: React.FC = () => {
               )}
             </AnimatePresence>
 
-            {/* Bottom 3-Card Snapshot: Complete Leadership Team Together */}
+            {/* Bottom 4-Card Snapshot: Complete Leadership Team Together */}
             <div className="pt-6 border-t border-[#17243A]/10">
               <span className="text-[11px] font-bold uppercase tracking-wider text-[#687385] block mb-3">
                 Leadership & Coordination Team Overview
               </span>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 
                 {/* Shreyansh Card */}
                 <div
@@ -746,6 +920,36 @@ export const AboutSection: React.FC = () => {
                     </div>
                     <p className="text-xs text-[#252B35]/80 truncate">B.Tech Mechanical Engg.</p>
                     <p className="text-[10px] text-[#687385] truncate">DTU, Delhi</p>
+                  </div>
+                </div>
+
+                {/* Paritosh Card */}
+                <div
+                  onClick={() => setActiveLeader('paritosh')}
+                  className={`p-4 rounded-2xl border transition-all cursor-pointer flex items-center gap-3.5 ${
+                    activeLeader === 'paritosh'
+                      ? 'bg-white border-[#5B8F8A] shadow-xs ring-1 ring-[#5B8F8A]/30'
+                      : 'bg-white/60 border-[#17243A]/10 hover:bg-white hover:border-[#17243A]/25'
+                  }`}
+                >
+                  <div className="w-13 h-13 rounded-xl overflow-hidden bg-[#17243A]/5 border border-[#17243A]/10 shrink-0">
+                    <img
+                      src="./assets/aistudio/WhatsApp_Image_2026-11-11_at_8.16.12_PM_2ff73539.jpeg"
+                      alt="Paritosh Rana"
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center justify-between">
+                      <h4 className="font-serif font-bold text-[#17243A] text-sm truncate">
+                        Paritosh Rana
+                      </h4>
+                      <span className="text-[9px] font-bold uppercase text-[#5B8F8A] bg-[#EEF3F8] px-1.5 py-0.5 rounded-md">
+                        Managing Director
+                      </span>
+                    </div>
+                    <p className="text-xs text-[#252B35]/80 truncate">Operations & Due Process</p>
+                    <p className="text-[10px] text-[#687385] truncate">Strategic Leadership</p>
                   </div>
                 </div>
 

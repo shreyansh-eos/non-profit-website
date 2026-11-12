@@ -12,6 +12,9 @@ import { Footer } from './components/Footer';
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal';
 import { DisclaimerModal } from './components/DisclaimerModal';
 import { AdminModerationModal } from './components/AdminModerationModal';
+import { VolunteerSection } from './components/VolunteerSection';
+import { HonourableMentionsSection } from './components/HonourableMentionsSection';
+import { ConversationLookupModal } from './components/ConversationLookupModal';
 import { AawaazChatbot } from './components/AawaazChatbot';
 import { ScrollToTop } from './components/ScrollToTop';
 import { AawaazRunGame } from './components/AawaazRunGame';
@@ -52,7 +55,12 @@ export default function App() {
     try {
       const saved = localStorage.getItem('project_aawaz_config');
       if (saved) {
-        return { ...DEFAULT_CONFIG, ...JSON.parse(saved) };
+        const parsed = JSON.parse(saved);
+        // Automatically upgrade outdated personal profile link to official Aawaaz Setu LinkedIn
+        if (parsed.linkedinUrl === 'https://www.linkedin.com/in/shreyansh-gupta-b85ab833b') {
+          parsed.linkedinUrl = DEFAULT_CONFIG.linkedinUrl;
+        }
+        return { ...DEFAULT_CONFIG, ...parsed };
       }
     } catch (e) {
       console.error('Error loading config from localStorage', e);
@@ -77,6 +85,28 @@ export default function App() {
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState(false);
   const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [isConversationLookupOpen, setIsConversationLookupOpen] = useState(false);
+  const [activeLookupCode, setActiveLookupCode] = useState('');
+
+  // Auto-detect #admin or /admin to open the admin portal
+  useEffect(() => {
+    const handleUrlCheck = () => {
+      const hash = window.location.hash.toLowerCase();
+      const pathname = window.location.pathname.toLowerCase();
+      if (
+        hash === '#admin' ||
+        hash === '#/admin' ||
+        hash === '#admin/login' ||
+        pathname === '/admin' ||
+        pathname === '/admin/login'
+      ) {
+        setIsAdminOpen(true);
+      }
+    };
+    handleUrlCheck();
+    window.addEventListener('hashchange', handleUrlCheck);
+    return () => window.removeEventListener('hashchange', handleUrlCheck);
+  }, []);
 
   // Sync stories to localStorage
   useEffect(() => {
@@ -148,17 +178,18 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8F7F3] text-[#252B35]">
+    <div className="min-h-screen w-full max-w-full flex flex-col bg-[#F8F7F3] text-[#252B35] overflow-x-clip">
       {/* Top Navbar */}
       <Navbar
         onOpenAdmin={() => setIsAdminOpen(true)}
         onOpenPrivacy={() => setIsPrivacyOpen(true)}
         onOpenDisclaimer={() => setIsDisclaimerOpen(true)}
         onOpenGame={() => setIsGameOpen(true)}
+        onOpenConversationLookup={() => setIsConversationLookupOpen(true)}
       />
 
       {/* Main Page Layout */}
-      <main className="flex-1">
+      <main className="flex-1 w-full max-w-full overflow-x-clip">
         {/* 1. Hero Section */}
         <Hero
           onExploreMission={() => {
@@ -186,11 +217,18 @@ export default function App() {
           isLoading={isLoading}
         />
 
+        {/* Honourable Mentions Section */}
+        <HonourableMentionsSection />
+
         {/* 5. Share Your Story Section (Section 9 & 10) */}
         <ShareStorySection
           config={config}
           onUpdateConfig={handleUpdateConfig}
           onSubmitStory={handleNewStorySubmission}
+          onOpenConversationLookup={(code) => {
+            if (code) setActiveLookupCode(code);
+            setIsConversationLookupOpen(true);
+          }}
         />
 
         {/* 6. Find Support & Helplines Section (Section 12) */}
@@ -199,7 +237,10 @@ export default function App() {
         {/* 7. Resources & Practical Toolkits Section (Section 13) */}
         <ResourcesSection />
 
-        {/* 8. Contact Us Section (Section 14) */}
+        {/* 8. Join as a Volunteer Section */}
+        <VolunteerSection />
+
+        {/* 9. Contact Us Section (Section 14) */}
         <ContactSection
           config={config}
           onUpdateConfig={handleUpdateConfig}
@@ -213,6 +254,7 @@ export default function App() {
         onOpenPrivacy={() => setIsPrivacyOpen(true)}
         onOpenDisclaimer={() => setIsDisclaimerOpen(true)}
         onOpenAdmin={() => setIsAdminOpen(true)}
+        onOpenConversationLookup={() => setIsConversationLookupOpen(true)}
       />
 
       {/* Modals */}
@@ -224,6 +266,12 @@ export default function App() {
       <DisclaimerModal
         isOpen={isDisclaimerOpen}
         onClose={() => setIsDisclaimerOpen(false)}
+      />
+
+      <ConversationLookupModal
+        isOpen={isConversationLookupOpen}
+        onClose={() => setIsConversationLookupOpen(false)}
+        initialCode={activeLookupCode}
       />
 
       <AdminModerationModal

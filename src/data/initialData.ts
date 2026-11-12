@@ -10,9 +10,9 @@ import {
 export const DEFAULT_CONFIG: SiteConfig = {
   email: 'ProjectAawaazUni@gmail.com',
   googleFormUrl: '', // Configurable placeholder as required
-  instagramUrl: 'https://instagram.com',
-  linkedinUrl: 'https://www.linkedin.com/in/shreyansh-gupta-b85ab833b',
-  twitterUrl: 'https://x.com',
+  instagramUrl: 'https://www.instagram.com/aawaazsetu',
+  linkedinUrl: 'https://www.linkedin.com/in/aawaaz-setu-889b5b449',
+  twitterUrl: 'https://x.com/AawaazSetu',
   youtubeUrl: 'https://youtube.com',
 };
 

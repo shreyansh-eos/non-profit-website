@@ -204,7 +204,7 @@ export const AawaazChatbot: React.FC = () => {
             className={`fixed z-50 flex flex-col bg-white rounded-3xl shadow-2xl border border-[#17243A]/15 overflow-hidden ${
               isExpanded
                 ? 'inset-3 sm:inset-6 md:inset-10 lg:inset-16 w-auto h-auto'
-                : 'bottom-20 right-4 sm:right-6 w-[94vw] sm:w-[420px] max-w-[440px] h-[640px] max-h-[85vh]'
+                : 'bottom-20 right-3 sm:right-6 w-[calc(100vw-24px)] sm:w-[420px] max-w-[440px] h-[640px] max-h-[85vh]'
             }`}
           >
             {/* Chatbot Top Header */}

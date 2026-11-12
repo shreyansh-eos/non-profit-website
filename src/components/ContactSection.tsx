@@ -146,6 +146,28 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 </a>
               </div>
 
+              {/* Paritosh Rana */}
+              <div className="flex items-center gap-3.5 pb-3 border-b border-[#17243A]/10">
+                <div className="w-12 h-12 rounded-2xl overflow-hidden bg-white border border-[#17243A]/10 shadow-xs shrink-0">
+                  <img
+                    src="./assets/aistudio/WhatsApp_Image_2026-11-11_at_8.16.12_PM_2ff73539.jpeg"
+                    alt="Paritosh Rana"
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-serif text-sm sm:text-base font-bold text-[#17243A] leading-tight truncate">
+                      Paritosh Rana
+                    </h3>
+                    <span className="text-[10px] font-bold uppercase text-[#5B8F8A] bg-[#EEF3F8] px-2 py-0.5 rounded-md shrink-0">
+                      Managing Director
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#687385] truncate">Strategic Operations & Campus Campaigns</p>
+                </div>
+              </div>
+
               {/* Shorya Panchal */}
               <div className="flex items-center gap-3.5 pb-3 border-b border-[#17243A]/10">
                 <div className="w-12 h-12 rounded-2xl overflow-hidden bg-white border border-[#17243A]/10 shadow-xs shrink-0">
@@ -223,125 +245,89 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
               </a>
             </div>
 
-            {/* Social Media Links with Editable URLs */}
-            <div className="p-7 bg-[#F8F7F3] rounded-3xl border border-[#17243A]/10 shadow-2xs">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
+            {/* Connect With Aawaaz Setu (Official Social Media Section) */}
+            <div className="p-7 bg-[#F8F7F3] rounded-3xl border border-[#17243A]/10 shadow-2xs space-y-4">
+              <div>
+                <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#5B8F8A] mb-1.5">
                   <Share2 className="w-4 h-4 text-[#5B8F8A]" />
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#17243A]">
-                    Awareness Channels
-                  </span>
+                  <span>Stay Connected</span>
                 </div>
-                <button
-                  onClick={() => setEditingSocials(!editingSocials)}
-                  className="text-xs text-[#687385] hover:text-[#17243A] flex items-center gap-1 cursor-pointer transition-colors"
-                  title="Edit social URLs"
-                >
-                  <Settings className="w-3.5 h-3.5" />
-                  <span>{editingSocials ? 'Cancel' : 'Edit Links'}</span>
-                </button>
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#17243A] tracking-tight">
+                  Connect With Aawaaz Setu
+                </h3>
+                <p className="text-xs sm:text-sm text-[#252B35]/85 leading-relaxed mt-1.5 font-normal">
+                  Stay connected with our mission. Follow us on social media to spread awareness, share stories, and be a part of the change.
+                </p>
               </div>
 
-              {editingSocials ? (
-                <div className="space-y-3 text-xs">
-                  <div>
-                    <label className="block text-[#687385] mb-1">Instagram URL:</label>
-                    <input
-                      type="url"
-                      value={tempSocials.instagramUrl}
-                      onChange={(e) => setTempSocials({ ...tempSocials, instagramUrl: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border border-[#17243A]/15 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#5B8F8A]"
-                    />
+              {/* 3 Dedicated Official Social Media Cards with 'Follow Us' Buttons */}
+              <div className="space-y-3 pt-2">
+                {/* 1. Instagram */}
+                <div className="p-3.5 bg-white rounded-2xl border border-[#17243A]/10 hover:border-rose-400/50 flex items-center justify-between gap-3 shadow-2xs hover:-translate-y-0.5 transition-all duration-200">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-9 h-9 rounded-xl bg-linear-to-tr from-amber-500 via-rose-500 to-purple-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                      <Instagram className="w-5 h-5 fill-current" />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-xs font-bold text-[#17243A] leading-tight truncate">Instagram</h4>
+                      <p className="text-[11px] text-[#687385] truncate">@aawaazsetu</p>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-[#687385] mb-1">LinkedIn URL:</label>
-                    <input
-                      type="url"
-                      value={tempSocials.linkedinUrl}
-                      onChange={(e) => setTempSocials({ ...tempSocials, linkedinUrl: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border border-[#17243A]/15 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#5B8F8A]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[#687385] mb-1">X (Twitter) URL:</label>
-                    <input
-                      type="url"
-                      value={tempSocials.twitterUrl}
-                      onChange={(e) => setTempSocials({ ...tempSocials, twitterUrl: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border border-[#17243A]/15 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#5B8F8A]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-[#687385] mb-1">YouTube URL:</label>
-                    <input
-                      type="url"
-                      value={tempSocials.youtubeUrl}
-                      onChange={(e) => setTempSocials({ ...tempSocials, youtubeUrl: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border border-[#17243A]/15 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#5B8F8A]"
-                    />
-                  </div>
-                  <div className="flex justify-end gap-2 pt-2">
-                    <button
-                      onClick={() => setEditingSocials(false)}
-                      className="px-3 py-1 text-[#687385] hover:text-[#17243A] cursor-pointer"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleSaveSocials}
-                      className="px-4 py-1.5 bg-[#17243A] text-white rounded-lg font-medium cursor-pointer"
-                    >
-                      Save Social URLs
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 gap-3 text-xs">
                   <a
-                    href={config.instagramUrl}
+                    href="https://www.instagram.com/aawaazsetu"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-3 bg-white rounded-xl border border-[#17243A]/10 hover:border-[#5B8F8A]/40 flex items-center gap-2.5 transition-all hover:-translate-y-0.5 text-[#252B35] shadow-2xs"
+                    className="px-3 py-1.5 rounded-xl bg-linear-to-r from-rose-600 to-purple-600 hover:from-rose-700 hover:to-purple-700 text-white text-xs font-bold shadow-2xs hover:shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
                   >
-                    <Instagram className="w-4 h-4 text-rose-600" />
-                    <span className="font-medium">Instagram</span>
-                    <ExternalLink className="w-3 h-3 text-[#687385] ml-auto" />
-                  </a>
-
-                  <a
-                    href={config.linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-white rounded-xl border border-[#17243A]/10 hover:border-[#5B8F8A]/40 flex items-center gap-2.5 transition-all hover:-translate-y-0.5 text-[#252B35] shadow-2xs"
-                  >
-                    <Linkedin className="w-4 h-4 text-blue-700" />
-                    <span className="font-medium">LinkedIn</span>
-                    <ExternalLink className="w-3 h-3 text-[#687385] ml-auto" />
-                  </a>
-
-                  <a
-                    href={config.twitterUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-white rounded-xl border border-[#17243A]/10 hover:border-[#5B8F8A]/40 flex items-center gap-2.5 transition-all hover:-translate-y-0.5 text-[#252B35] shadow-2xs"
-                  >
-                    <Twitter className="w-4 h-4 text-[#17243A]" />
-                    <span className="font-medium">X (Twitter)</span>
-                    <ExternalLink className="w-3 h-3 text-[#687385] ml-auto" />
-                  </a>
-
-                  <a
-                    href={config.youtubeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-white rounded-xl border border-[#17243A]/10 hover:border-[#5B8F8A]/40 flex items-center gap-2.5 transition-all hover:-translate-y-0.5 text-[#252B35] shadow-2xs"
-                  >
-                    <Youtube className="w-4 h-4 text-rose-700" />
-                    <span className="font-medium">YouTube</span>
-                    <ExternalLink className="w-3 h-3 text-[#687385] ml-auto" />
+                    <span>Follow Us</span>
+                    <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
-              )}
+
+                {/* 2. LinkedIn */}
+                <div className="p-3.5 bg-white rounded-2xl border border-[#17243A]/10 hover:border-[#0077B5]/50 flex items-center justify-between gap-3 shadow-2xs hover:-translate-y-0.5 transition-all duration-200">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-9 h-9 rounded-xl bg-[#0077B5] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                      <Linkedin className="w-5 h-5 fill-current" />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-xs font-bold text-[#17243A] leading-tight truncate">LinkedIn</h4>
+                      <p className="text-[11px] text-[#687385] truncate">Aawaaz Setu Official</p>
+                    </div>
+                  </div>
+                  <a
+                    href="https://www.linkedin.com/in/aawaaz-setu-889b5b449"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-xl bg-[#0077B5] hover:bg-[#005f93] text-white text-xs font-bold shadow-2xs hover:shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
+                  >
+                    <span>Follow Us</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+
+                {/* 3. X (Twitter) */}
+                <div className="p-3.5 bg-white rounded-2xl border border-[#17243A]/10 hover:border-[#17243A]/40 flex items-center justify-between gap-3 shadow-2xs hover:-translate-y-0.5 transition-all duration-200">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-9 h-9 rounded-xl bg-[#17243A] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                      <Twitter className="w-5 h-5 fill-current" />
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-xs font-bold text-[#17243A] leading-tight truncate">X (Twitter)</h4>
+                      <p className="text-[11px] text-[#687385] truncate">@AawaazSetu</p>
+                    </div>
+                  </div>
+                  <a
+                    href="https://x.com/AawaazSetu"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 rounded-xl bg-[#17243A] hover:bg-[#252B35] text-white text-xs font-bold shadow-2xs hover:shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer"
+                  >
+                    <span>Follow Us</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
             </div>
 
           </div>

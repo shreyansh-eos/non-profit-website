@@ -52,7 +52,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({
           <div>
             <h4 className="font-bold text-[#17243A] mb-1">2. Story Submission & Mandatory Review Protocol</h4>
             <p>
-              Every story or confession submitted via email, Google Form, or on-site interface is subject to careful human review before any publication consideration. We never automatically publish user submissions.
+              Every story or confession submitted via email or on-site interface is subject to careful human review before any publication consideration. We never automatically publish user submissions.
             </p>
           </div>
 

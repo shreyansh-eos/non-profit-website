@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Mail, ExternalLink, ShieldCheck, AlertTriangle, Send, CheckCircle2, Settings, FileText } from 'lucide-react';
+import { Mail, ShieldCheck, AlertTriangle, Send, CheckCircle2, Copy, Check, MessageSquare } from 'lucide-react';
 import { Story, SiteConfig, StoryCategory, AuthorCreditPreference } from '../types';
 
 interface ShareStorySectionProps {
   config: SiteConfig;
-  onUpdateConfig: (newConfig: Partial<SiteConfig>) => void;
+  onUpdateConfig?: (newConfig: Partial<SiteConfig>) => void;
   onSubmitStory: (story: Omit<Story, 'id' | 'status' | 'date' | 'submittedAt'>) => void;
+  onOpenConversationLookup?: (code?: string) => void;
 }
 
 export const ShareStorySection: React.FC<ShareStorySectionProps> = ({
   config,
   onUpdateConfig,
   onSubmitStory,
+  onOpenConversationLookup,
 }) => {
   const [preferredName, setPreferredName] = useState('');
   const [creditPreference, setCreditPreference] = useState<AuthorCreditPreference>('Anonymous');
@@ -23,10 +25,10 @@ export const ShareStorySection: React.FC<ShareStorySectionProps> = ({
   const [consentGiven, setConsentGiven] = useState(false); // Optional for publication
   const [privacySanitized, setPrivacySanitized] = useState(true);
   const [allowContact, setAllowContact] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submittedCode, setSubmittedCode] = useState<string>('');
+  const [codeCopied, setCodeCopied] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [editingFormUrl, setEditingFormUrl] = useState(false);
-  const [tempFormUrl, setTempFormUrl] = useState(config.googleFormUrl);
-  const [showFormGuide, setShowFormGuide] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   const mailtoHref = `mailto:${config.email}?subject=${encodeURIComponent(
@@ -35,7 +37,7 @@ export const ShareStorySection: React.FC<ShareStorySectionProps> = ({
     `Dear Aawaaz Setu Team,\n\nI would like to share my story with your awareness initiative.\n\n[Credit Preference]: Anonymous / Pseudonym / First name\n[Preferred Name]: \n[Story Title]: \n[My Story / Experience]: \n\n[Publication Consent]: (Yes / No) - I agree / do not agree for this story to be considered for anonymous publication after review with identifying details removed.\n\nThank you.`
   )}`;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
@@ -49,7 +51,42 @@ export const ShareStorySection: React.FC<ShareStorySectionProps> = ({
       return;
     }
 
-    // Note: Publication consent is NOT mandatory for general confession submissions as specified in Section 9
+    setIsSubmitting(true);
+
+    try {
+      // Submit to backend persistent database
+      const response = await fetch('/api/stories/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          title: storyTitle.trim() || 'Survivor Experience',
+          content: storyContent.trim(),
+          category,
+          authorName: preferredName.trim() || 'Anonymous Survivor',
+          creditPreference,
+          consentGiven,
+          privacySanitized,
+          allowContact,
+          email: email.trim() || undefined,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSubmittedCode(data.conversationId);
+        try {
+          localStorage.setItem('aawaaz_last_conversation_code', data.conversationId);
+        } catch (e) {
+          // ignore
+        }
+      }
+    } catch (err) {
+      console.warn('Backend submission error, persisting locally:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
+
+    // Also notify local parent state
     onSubmitStory({
       authorName: preferredName.trim() || 'Anonymous Survivor',
       creditPreference,
@@ -57,7 +94,7 @@ export const ShareStorySection: React.FC<ShareStorySectionProps> = ({
       title: storyTitle.trim() || 'Survivor Experience',
       excerpt: storyContent.trim().slice(0, 180) + '...',
       content: storyContent.trim(),
-      consentGiven, // whether author opted in for public publishing
+      consentGiven,
       privacySanitized,
       email: email.trim() || undefined,
       allowContact,
@@ -66,10 +103,6 @@ export const ShareStorySection: React.FC<ShareStorySectionProps> = ({
     setIsSubmitted(true);
   };
 
-  const handleSaveFormUrl = () => {
-    onUpdateConfig({ googleFormUrl: tempFormUrl });
-    setEditingFormUrl(false);
-  };
 
   return (
     <section id="share-story" className="py-20 sm:py-24 bg-white border-b border-[#17243A]/10">
@@ -134,169 +167,146 @@ export const ShareStorySection: React.FC<ShareStorySectionProps> = ({
           </ul>
         </div>
 
-        {/* Two Prominent Action Channels: Email Us & Google Form */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
-          
-          {/* Button 1: Email Us with Prefilled Subject */}
-          <div className="p-7 sm:p-8 bg-[#F8F7F3] rounded-3xl border border-[#17243A]/10 flex flex-col justify-between hover:border-[#5B8F8A]/30 hover:shadow-xs transition-all duration-300">
-            <div>
-              <div className="w-11 h-11 rounded-2xl bg-[#17243A] text-white flex items-center justify-center mb-5 shadow-xs border border-[#5B8F8A]/20">
+        {/* Submit via Direct Email Channel */}
+        <div className="mb-12">
+          <div className="p-7 sm:p-9 bg-[#F8F7F3] rounded-3xl border border-[#17243A]/10 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:border-[#5B8F8A]/30 hover:shadow-xs transition-all duration-300">
+            <div className="max-w-2xl">
+              <div className="w-11 h-11 rounded-2xl bg-[#17243A] text-white flex items-center justify-center mb-4 shadow-xs border border-[#5B8F8A]/20">
                 <Mail className="w-5 h-5 text-[#EAE5F5]" />
               </div>
-              <h3 className="font-serif text-xl font-bold text-[#17243A] mb-2">
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#17243A] mb-2">
                 Submit via Direct Email
               </h3>
-              <p className="text-xs sm:text-sm text-[#252B35]/80 leading-relaxed mb-4">
-                Send your submission directly to our private inbox. Subject line is prefilled for your convenience: <span className="font-mono text-[#17243A]">Aawaaz Setu — Story Submission</span>.
+              <p className="text-xs sm:text-sm text-[#252B35]/80 leading-relaxed mb-3 font-normal">
+                Prefer submitting directly from your personal email client? Send your confession or experience directly to our private inbox. The subject line and confidential format are prefilled for your convenience: <span className="font-mono text-[#17243A] font-semibold">Aawaaz Setu — Story Submission</span>.
               </p>
-              <div className="text-xs text-[#687385] mb-6 font-mono">
-                Recipient: <strong className="text-[#17243A]">{config.email}</strong>
+              <div className="text-xs text-[#687385] font-mono">
+                Official Inbox: <strong className="text-[#17243A]">{config.email}</strong>
               </div>
             </div>
 
-            <a
-              href={mailtoHref}
-              className="w-full py-3.5 px-4 text-center text-sm font-semibold text-white bg-[#17243A] hover:bg-[#252B35] rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs shadow-2xs flex items-center justify-center gap-2 cursor-pointer border border-[#17243A]"
-            >
-              <Mail className="w-4 h-4 text-[#EAE5F5]" />
-              <span>Email Us ({config.email})</span>
-            </a>
-          </div>
-
-          {/* Button 2: Submit Through Google Form (Configurable) */}
-          <div className="p-7 sm:p-8 bg-[#F8F7F3] rounded-3xl border border-[#17243A]/10 flex flex-col justify-between hover:border-[#5B8F8A]/30 hover:shadow-xs transition-all duration-300">
-            <div>
-              <div className="flex items-center justify-between mb-5">
-                <div className="w-11 h-11 rounded-2xl bg-[#5B8F8A]/15 text-[#5B8F8A] flex items-center justify-center border border-[#5B8F8A]/20">
-                  <ExternalLink className="w-5 h-5" />
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setShowFormGuide(!showFormGuide)}
-                    className="text-xs text-[#5B8F8A] hover:text-[#17243A] flex items-center gap-1 p-1 transition-colors cursor-pointer"
-                    title="View Recommended Google Form Fields"
-                  >
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>Form Fields</span>
-                  </button>
-                  <button
-                    onClick={() => setEditingFormUrl(!editingFormUrl)}
-                    title="Configure Google Form URL"
-                    className="text-xs text-[#687385] hover:text-[#17243A] flex items-center gap-1 p-1 transition-colors cursor-pointer"
-                  >
-                    <Settings className="w-3.5 h-3.5" />
-                    <span>Configure URL</span>
-                  </button>
-                </div>
-              </div>
-
-              <h3 className="font-serif text-xl font-bold text-[#17243A] mb-2">
-                Submit Through Google Form
-              </h3>
-              <p className="text-xs sm:text-sm text-[#252B35]/80 leading-relaxed mb-4">
-                Prefer submitting via a standardized Google Form? You can submit your confession or experience anonymously through our official form.
-              </p>
-
-              {editingFormUrl ? (
-                <div className="mb-4 p-4 bg-white rounded-2xl border border-[#17243A]/10 text-xs space-y-2.5">
-                  <label className="font-semibold text-[#17243A] block">Set your Google Form URL:</label>
-                  <input
-                    type="url"
-                    value={tempFormUrl}
-                    onChange={(e) => setTempFormUrl(e.target.value)}
-                    placeholder="https://docs.google.com/forms/d/e/.../viewform"
-                    className="w-full px-3 py-2 border border-[#17243A]/20 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#5B8F8A]"
-                  />
-                  <div className="flex justify-end gap-2 pt-1">
-                    <button
-                      onClick={() => setEditingFormUrl(false)}
-                      className="px-3 py-1 text-[#687385] hover:text-[#17243A] cursor-pointer"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleSaveFormUrl}
-                      className="px-4 py-1.5 bg-[#17243A] text-white rounded-lg font-medium cursor-pointer"
-                    >
-                      Save URL
-                    </button>
-                  </div>
-                </div>
-              ) : null}
-
-              {showFormGuide && (
-                <div className="mb-4 p-4 bg-white rounded-2xl border border-[#17243A]/10 text-xs text-[#252B35] space-y-2">
-                  <div className="font-bold text-[#17243A]">Section 10 Recommended Google Form Fields:</div>
-                  <ol className="list-decimal pl-4 space-y-1 text-[#252B35]/80">
-                    <li>What would you like to submit? (Personal Experience / Confession / Awareness Story / Message)</li>
-                    <li>Story Title (Optional)</li>
-                    <li>Story or Experience (Long-answer)</li>
-                    <li>How would you prefer your story to be credited? (Anonymous / Pseudonym / First name)</li>
-                    <li>Do you consent to your story being considered for publication? (Yes / No)</li>
-                    <li>Agree to identifying details removal? (Yes / No)</li>
-                    <li>Would you like to be contacted? (Yes via email / No)</li>
-                    <li>Email address (Optional)</li>
-                    <li>Consent acknowledgment checkbox</li>
-                  </ol>
-                </div>
-              )}
-            </div>
-
-            {config.googleFormUrl ? (
+            <div className="shrink-0 flex flex-col sm:flex-row gap-3">
               <a
-                href={config.googleFormUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3.5 px-4 text-center text-sm font-semibold text-[#17243A] bg-white hover:bg-[#EEF3F8] border border-[#17243A]/20 hover:border-[#17243A]/40 rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs shadow-2xs flex items-center justify-center gap-2 cursor-pointer"
+                href={mailtoHref}
+                className="py-3.5 px-6 text-center text-sm font-semibold text-white bg-[#17243A] hover:bg-[#252B35] rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xs shadow-2xs flex items-center justify-center gap-2 cursor-pointer border border-[#17243A]"
               >
-                <span>Open Google Form</span>
-                <ExternalLink className="w-4 h-4 text-[#5B8F8A]" />
+                <Mail className="w-4 h-4 text-[#EAE5F5]" />
+                <span>Email Us ({config.email})</span>
               </a>
-            ) : (
-              <button
-                onClick={() => setEditingFormUrl(true)}
-                className="w-full py-3.5 px-4 text-center text-sm font-semibold text-[#687385] bg-[#EEF3F8] hover:bg-[#EAE5F5] border border-dashed border-[#17243A]/20 rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Settings className="w-4 h-4 text-[#5B8F8A]" />
-                <span>Configure Google Form Link</span>
-              </button>
-            )}
+            </div>
           </div>
-
         </div>
 
         {/* On-Site Story Submission Form */}
         <div className="bg-[#F8F7F3] rounded-3xl border border-[#17243A]/10 p-6 sm:p-10 shadow-xs">
           
-          <div className="mb-8">
-            <h3 className="font-serif text-2xl font-bold text-[#17243A] mb-2">
-              Submit Anonymously On-Site
-            </h3>
-            <p className="text-sm text-[#252B35]/80 leading-relaxed font-normal">
-              You can also share directly below. Submissions are securely queued for manual review. We sanitize identifying names, places, and sensitive identifiers before any publication consideration.
-            </p>
+          <div className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div>
+              <h3 className="font-serif text-2xl font-bold text-[#17243A] mb-2">
+                Submit Anonymously On-Site
+              </h3>
+              <p className="text-sm text-[#252B35]/80 leading-relaxed font-normal max-w-2xl">
+                Share your journey or thoughts below. Every submission is automatically issued a secure, confidential <strong>Conversation Code (AS-XXXX-XXXX)</strong> so you can privately read replies from our team and send anonymous follow-up messages.
+              </p>
+            </div>
+            {onOpenConversationLookup && (
+              <button
+                type="button"
+                onClick={() => onOpenConversationLookup()}
+                className="shrink-0 px-4 py-2 bg-white hover:bg-[#EEF3F8] text-[#17243A] border border-[#17243A]/15 rounded-xl text-xs font-semibold flex items-center gap-2 cursor-pointer transition-colors shadow-2xs self-start md:self-auto"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-[#5B8F8A]" />
+                <span>Already Have a Code? Check Replies</span>
+              </button>
+            )}
           </div>
 
           {isSubmitted ? (
-            <div className="p-8 sm:p-10 bg-white rounded-2xl border border-[#5B8F8A]/30 text-center space-y-4">
+            <div className="p-8 sm:p-10 bg-white rounded-2xl border border-[#5B8F8A]/30 text-center space-y-6">
               <div className="w-12 h-12 rounded-2xl bg-[#EEF3F8] text-[#5B8F8A] flex items-center justify-center mx-auto border border-[#5B8F8A]/20">
                 <CheckCircle2 className="w-6 h-6" />
               </div>
-              <h4 className="font-serif text-xl sm:text-2xl font-bold text-[#17243A]">
-                Thank You for Trusting Us With Your Story
-              </h4>
-              <p className="text-sm text-[#252B35]/80 max-w-lg mx-auto leading-relaxed font-normal">
-                Your experience has been securely submitted to the Aawaaz Setu review queue. Our team reviews every submission with care.
-                {consentGiven ? (
-                  <span> Because you consented to publication, our team will review and redact identifying details before considering it for public display.</span>
-                ) : (
-                  <span> As requested, your submission will remain completely private to our awareness team and will <strong>not</strong> be published publicly.</span>
-                )}
-              </p>
-              <div className="pt-4">
+              <div>
+                <h4 className="font-serif text-xl sm:text-2xl font-bold text-[#17243A] mb-2">
+                  Thank You for Trusting Us With Your Story
+                </h4>
+                <p className="text-sm text-[#252B35]/80 max-w-lg mx-auto leading-relaxed font-normal">
+                  Your experience has been securely submitted to the Aawaaz Setu review queue.
+                  {consentGiven ? (
+                    <span> Because you consented to publication, our team will review and redact identifying details before considering it for public display.</span>
+                  ) : (
+                    <span> As requested, your submission will remain completely private to our awareness team and will <strong>not</strong> be published publicly.</span>
+                  )}
+                </p>
+              </div>
+
+              {/* Private Two-Way Conversation Tracking Code Box */}
+              {submittedCode && (
+                <div className="max-w-md mx-auto p-5 bg-[#F8F7F3] rounded-2xl border-2 border-[#5B8F8A]/40 text-left space-y-3 shadow-xs">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-[#5B8F8A]">
+                      Your Unique Conversation Code
+                    </span>
+                    <span className="text-[10px] text-[#687385] font-semibold bg-white px-2 py-0.5 rounded-md border border-[#17243A]/10">
+                      Two-Way Private Channel
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-white p-3 rounded-xl border border-[#17243A]/15 shadow-2xs">
+                    <span className="font-mono font-bold text-base sm:text-lg text-[#17243A] tracking-wider select-all">
+                      {submittedCode}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard.writeText(submittedCode);
+                        setCodeCopied(true);
+                        setTimeout(() => setCodeCopied(false), 2500);
+                      }}
+                      className="px-3.5 py-2 bg-[#17243A] hover:bg-[#252B35] text-white text-xs font-semibold rounded-lg flex items-center justify-center gap-1.5 cursor-pointer transition-all shadow-xs"
+                    >
+                      {codeCopied ? (
+                        <>
+                          <Check className="w-3.5 h-3.5 text-emerald-400" />
+                          <span>Code Copied!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-3.5 h-3.5 text-[#EAE5F5]" />
+                          <span>Copy Conversation Code</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Required Clear Warning */}
+                  <div className="p-3 bg-amber-50 border border-amber-200/80 rounded-xl text-xs text-amber-900 leading-relaxed font-medium flex items-start gap-2">
+                    <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Warning:</strong> Save this code securely. You will need it to read private admin replies.
+                    </span>
+                  </div>
+
+                  {onOpenConversationLookup && (
+                    <div className="pt-1">
+                      <button
+                        type="button"
+                        onClick={() => onOpenConversationLookup(submittedCode)}
+                        className="w-full py-2.5 px-4 bg-[#5B8F8A] hover:bg-[#4d7d79] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-2xs"
+                      >
+                        <MessageSquare className="w-3.5 h-3.5 text-[#EAE5F5]" />
+                        <span>Open My Conversation Thread Now</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
                 <button
                   onClick={() => {
                     setIsSubmitted(false);
+                    setSubmittedCode('');
                     setStoryContent('');
                     setStoryTitle('');
                   }}
